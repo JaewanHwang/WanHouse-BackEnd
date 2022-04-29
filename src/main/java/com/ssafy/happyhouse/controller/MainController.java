@@ -50,22 +50,7 @@ public class MainController extends HttpServlet {
 			String url = request.getServletPath();
 			PageInfo pageInfo = null;
 
-			if (url.equals("/index.do")) {
-				pageInfo = index(request, response);
-// login
-			} else if (url.equals("/login_form.do")) {
-				pageInfo = loginForm(request, response);
-			} else if (url.equals("/login.do")) {
-				pageInfo = login(request, response);
-			} else if (url.equals("/logout.do")) {
-				pageInfo = logout(request, response);
-			} else if (url.equals("/register.do")) {
-				pageInfo = register(request, response);
-			} else if (url.equals("/register_form.do")) {
-				pageInfo = registerForm(request, response);
-			} else if (url.equals("/member_detail.do")) {
-				pageInfo = memberDetail(request, response);
-			} else if (url.equals("/member_modify.do")) {
+			 if (url.equals("/member_modify.do")) {
 				pageInfo = memberModify(request, response);
 			} else if (url.equals("/member_delete.do")) {
 				pageInfo = memberDelete(request, response);

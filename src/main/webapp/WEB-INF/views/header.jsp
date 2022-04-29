@@ -6,7 +6,7 @@
 		<div class="container">
 			<div
 				class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-				<a href="index.do"
+				<a href="/"
 					class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none"
 					style="font-size: 36px">Happy House <svg class="bi me-2"
 						width="40" height="32" role="img" aria-label="Bootstrap">
@@ -15,9 +15,9 @@
 				</a>
 				<ul
 					class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-					<li><a href="${root }/board_list.do"
+					<li><a href="${root }/board/board_list"
 						class="nav-link text-white"> 게시판 </a></li>
-					<li><a href="${root }/apt_list.do"
+					<li><a href="${root }/housedeal/apt_list"
 						class="nav-link text-white"> 실거래가 조회 </a></li>
 				</ul>
 			</div>
@@ -36,9 +36,9 @@
 						<!-- 로그인 안 한 경우 -->
 						<span>
 							<button type="button" class="btn btn-light text-dark me-2"
-								onclick="move('/login_form.do')">Login</button>
+								onclick="move('/user/login_form')">Login</button>
 							<button type="button" class="btn btn-primary me-2"
-								onclick="move('/register_form.do')">회원가입</button>
+								onclick="move('/user/register_form')">회원가입</button>
 						</span>
 					</c:when>
 					<c:otherwise>
@@ -46,9 +46,9 @@
 						<span>
 							<a>${member.name}님 반갑습니다.</a>
 							<button type="button" class="btn btn-light text-dark me-2"
-								onclick="move('/logout.do')">Logout</button>
+								onclick="move('/user/logout')">Logout</button>
 							<button type="button" class="btn btn-primary me-2"
-								onclick="move('/member_detail.do')">회원정보</button>
+								onclick="move('/user/member_detail')">회원정보</button>
 						</span>
 					</c:otherwise>
 				</c:choose>

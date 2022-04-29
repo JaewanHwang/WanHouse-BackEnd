@@ -4,8 +4,9 @@ import java.sql.SQLException;
 
 import com.ssafy.happyhouse.model.dao.MemberDAO;
 import com.ssafy.happyhouse.model.dto.Member;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class MemberService {
 	MemberDAO memberdao = new MemberDAO();
 

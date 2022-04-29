@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.ssafy.happyhouse.model.dao.BoardDAO;
 import com.ssafy.happyhouse.model.dto.Board;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BoardService {
 	BoardDAO boarddao = new BoardDAO();
 

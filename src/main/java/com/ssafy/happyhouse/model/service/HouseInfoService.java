@@ -2,10 +2,11 @@ package com.ssafy.happyhouse.model.service;
 
 import com.ssafy.happyhouse.model.dao.HouseInfoDAO;
 import com.ssafy.happyhouse.model.dto.HouseInfo;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
-
+@Service
 public class HouseInfoService {
 	HouseInfoDAO dao = new HouseInfoDAO();
 	

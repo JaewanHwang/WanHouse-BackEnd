@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="/settings.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/settings.jsp"></jsp:include>
 <script>
 	function confirm_submit() {
 		return confirm("정말 하시겠습니까? ");
@@ -12,7 +12,7 @@
 
 </head>
 <body>
-	<jsp:include page="/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/header.jsp"></jsp:include>
 	<div class="container px-4 px-lg-5">
 		<div class="row gx-4 gx-lg-5 justify-content-center">
 			<div class="col-md-10 col-lg-8 col-xl-7">
@@ -57,12 +57,12 @@
 							</div>
 
 							<div class="checkbox mb-3"></div>
-							<button class="w-100 btn btn-lg btn-primary"
+							<input class="w-100 btn btn-lg btn-primary"
 								style="margin-bottom: 20px" type="submit" id="member_modify"
-								formaction="${root }/member_modify.do">수정</button>
+								formaction="${root }/user/member_modify" value="수정">
 							<input class="w-100 btn btn-lg btn-primary"
 								style="margin-bottom: 20px" type="submit" id="member_delete"
-								formaction="${root }/member_delete.do" value="회원탈퇴"></input>
+								formaction="${root }/user/member_delete" value="회원탈퇴">
 						</form>
 
 					</div>
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 	</div>
-	<jsp:include page="/footer.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 	<!-- Bootstrap core JS-->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

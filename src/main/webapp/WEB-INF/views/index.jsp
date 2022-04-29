@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="/settings.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/settings.jsp"></jsp:include>
 <script>
 </script>
 </head>
 <body>
-	<jsp:include page="/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/header.jsp"></jsp:include>
 	<header class="masthead"
 		style="background-image: url('assets/img/home-bg.jpg')">
 		<div class="container position-relative px-4 px-lg-5">
@@ -16,8 +16,7 @@
 				<div class="col-md-10 col-lg-8 col-xl-7">
 					<div class="site-heading">
 						<h1>Happy House</h1>
-						<span class="subheading">Kim Wansang / Yim Doyoung / Yun
-							Yeobeen</span>
+						<span class="subheading">Kim Wansang / Hwang Jaewan</span>
 					</div>
 				</div>
 			</div>
@@ -75,7 +74,7 @@
 		</div>
 	</div>
 	<!-- Footer-->
-	<jsp:include page="/footer.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 	<!-- Bootstrap core JS-->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

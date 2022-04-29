@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="/settings.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/settings.jsp"></jsp:include>
 </head>
 <body>
-<jsp:include page="/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/header.jsp"></jsp:include>
 	<h1>문제 발생</h1>
 	<h2>${errorMsg }</h2>
 </body>

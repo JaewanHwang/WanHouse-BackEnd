@@ -4,16 +4,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="/settings.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/settings.jsp"></jsp:include>
 </head>
 <body>
-	<jsp:include page="/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views//header.jsp"></jsp:include>
 	<div class="container px-4 px-lg-5">
 		<div class="row gx-4 gx-lg-5 justify-content-center">
 			<div class="col-md-10 col-lg-8 col-xl-7">
 				<div class="text-center">
 					<div class="form-signin">
-						<form style="margin-top: 30px" method="post" action="${root }/login.do">
+						<form style="margin-top: 30px" method="post" action="${root }/user/login">
 							<svg style="margin-bottom: 20px"
 								xmlns="http://www.w3.org/2000/svg" width="50" height="50"
 								fill="currentColor" class="bi bi-person-circle"
@@ -36,7 +36,7 @@
 							</div>
 
 							<div class="checkbox mb-3">
-								<label> <input type="checkbox" value="remember-me" />
+								<label> <input type="checkbox" value="remember-me" name="idsave"/>
 									Remember me
 								</label>
 							</div>
@@ -58,7 +58,7 @@
 		</div>
 	</div>
 
-	<jsp:include page="/footer.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 	<!-- Bootstrap core JS-->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
