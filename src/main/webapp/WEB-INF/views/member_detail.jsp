@@ -62,6 +62,7 @@
 								formaction="${root }/user/member_modify" value="수정">
 							<input class="w-100 btn btn-lg btn-primary"
 								style="margin-bottom: 20px" type="submit" id="member_delete"
+								formmethod="GET"
 								formaction="${root }/user/member_delete" value="회원탈퇴">
 						</form>
 

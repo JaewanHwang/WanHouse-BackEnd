@@ -49,15 +49,8 @@ public class MainController extends HttpServlet {
 		try {
 			String url = request.getServletPath();
 			PageInfo pageInfo = null;
-
-			 if (url.equals("/member_modify.do")) {
-				pageInfo = memberModify(request, response);
-			} else if (url.equals("/member_delete.do")) {
-				pageInfo = memberDelete(request, response);
-			} else if (url.equals("/register.do")) {
-				pageInfo = register(request, response);
 //	board
-			} else if (url.equals("/board_list.do")) {
+			if (url.equals("/board_list.do")) {
 				pageInfo = boardList(request, response);
 			} else if (url.equals("/board_detail.do")) {
 				pageInfo = boardDetail(request, response);
@@ -71,6 +64,7 @@ public class MainController extends HttpServlet {
 				pageInfo = boardInsert(request, response);
 			} else if (url.equals("/board_form.do")) {
 				pageInfo = boardForm(request, response);
+//  apt_list
 			} else if (url.equals("/apt_list.do")) {
 				pageInfo = aptList(request, response);
 			} else if (url.equals("/apt_detail.do")) {

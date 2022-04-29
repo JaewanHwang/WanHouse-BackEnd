@@ -69,13 +69,16 @@ public class UserController {
 
     @PostMapping("/member_modify")
     private String memberModify(@ModelAttribute Member member, Model model, HttpSession session) throws SQLException {
-            memberService.update(member);
-            session.setAttribute("member", member);
-            return "redirect:/";
+        memberService.update(member);
+        session.setAttribute("member", member);
+        return "redirect:/";
     }
 
+    @GetMapping("/member_delete")
+    private String memberDelete(@ModelAttribute Member member, HttpSession session) throws SQLException {
+        memberService.delete(member.getId());
+        session.invalidate();
+        return "redirect:/";
+    }
 
 }
-
-
-

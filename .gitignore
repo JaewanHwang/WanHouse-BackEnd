@@ -33,4 +33,5 @@ build/
 .vscode/
 
 ### Wansang's gitignore ###
-DBUtil.java
+!**/src/main/java/com.ssafy.happyhouse/DBUtil.java
+
