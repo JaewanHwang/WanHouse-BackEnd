@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.myapp.model.dao.DeptDAO">
+
+	<insert id="insertDept" parameterType="Dept">
+		insert into dept values(#{deptNo},#{dName},#{loc})
+	</insert>
+	
+	<update id="updateDept" parameterType="Dept">
+		update dept set dname=#{dName} , loc=#{loc} where deptno=#{deptNo}
+	</update>
+	
+	<delete id="deleteDept" parameterType="int">
+		delete from dept where deptno = #{deptNo}
+	</delete>
+	
+	<sql id="basicDeptSQL">
+		select deptNo,dName,loc from dept 
+	</sql>
+	<select id="selectDept" parameterType="int" resultType="Dept">
+		<include refid="basicDeptSQL"/> where deptno = #{value}
+	</select>
+	
+	<resultMap type="Dept" id="DeptResultMap">
+		<id column="no" property="deptNo"/> <!--  dept_no : deptNo -->
+		<result column="name" property="dName"/>
+		<result column="lc" property="loc"/>		
+	</resultMap>
+	
+	<select id="selectDeptList" resultMap="DeptWithEmpResultMap">
+		select deptNo as no ,dName as name ,loc as lc from dept
+	</select>
+	
+	<resultMap type="Emp" id="EmpSimpleResultMap">
+		<id column="empno" property="empNo"/>
+		<result column="ename" property="eName"/>
+		<result column="sal" property="sal"/>
+	</resultMap>
+	
+	<resultMap type="Dept" id="DeptWithEmpResultMap" extends="DeptResultMap">
+		<collection property="empList" resultMap="EmpSimpleResultMap"/>
+	</resultMap>
+	<resultMap type="Dept" id="DeptWithEmpResultMap2" extends="DeptResultMap">
+		<collection property="empList" select="selectEmpList" column="no"/>
+	</resultMap>
+	
+	<select id="selectDeptWithEmpList" resultMap="DeptWithEmpResultMap">
+		select d.deptNo as no ,d.dName as name ,d.loc as lc, e.empno,e.ename,e.sal 
+		from dept d left join emp e on (d.deptno = e.deptno)
+		where d.deptno = #{deptNo}
+	</select>
+	
+	<select id="selectDeptWithEmpList2" resultMap="DeptWithEmpResultMap2">
+		select d.deptNo as no ,d.dName as name ,d.loc as lc
+		from dept d
+		where d.deptno = #{deptNo}
+	</select>
+	
+	<select id="selectEmpList" resultMap="EmpSimpleResultMap" parameterType="int" >
+		select empNo,eName,sal
+		from   emp
+		where  deptno = #{deptNo}
+	</select>
+	
+	<select id="selectDeptListByName" parameterType="string">
+		<include refid="basicDeptSQL"/> where dname like concat('%', #{dName}, '%')
+	</select>
+	
+	<select id="selectDeptListByCondition" parameterType="map" resultType="Dept">
+          <include refid="basicDeptSQL" />
+          <where>
+              <if test="dName != '' ">
+                  <!-- where 적지 않기! -->
+                  dname like concat('%', #{dName}, '%')
+              </if>
+              <if test="loc != '' ">
+                  and loc = #{loc}
+                  <!-- 선행구문이없다면 and 스스로 없어짐 -->
+              </if>
+          </where>
+      </select>
+	
+</mapper>
+
+
+
+
+
+
+
