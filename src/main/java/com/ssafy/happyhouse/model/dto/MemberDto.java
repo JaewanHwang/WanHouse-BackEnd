@@ -1,13 +1,13 @@
 package com.ssafy.happyhouse.model.dto;
 
-public class Member {
+public class MemberDto {
 	private String id;
 	private String pw;
 	private String name;
 	private String addr;
 	private String phone;
 
-	public Member(String id, String pw, String name, String addr, String phone) {
+	public MemberDto(String id, String pw, String name, String addr, String phone) {
 		super();
 		this.id = id;
 		this.pw = pw;

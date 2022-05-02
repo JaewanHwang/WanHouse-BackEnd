@@ -1,7 +1,7 @@
 package com.ssafy.happyhouse.controller;
 
 
-import com.ssafy.happyhouse.model.dto.Member;
+import com.ssafy.happyhouse.model.dto.MemberDto;
 import com.ssafy.happyhouse.model.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class UserController {
     @PostMapping("/login")
     private String login(@RequestParam Map<String, String> map, Model model, HttpSession session, HttpServletResponse response) throws SQLException {
         log.debug("[login] id: {},  pw: {}, remember-me: {}", map.get("id"), map.get("pw"), map.get("idsave"));
-        Member member = memberService.login(map.get("id"), map.get("pw"));
+        MemberDto member = memberService.login(map.get("id"), map.get("pw"));
         if (member != null) {
             session.setAttribute("member", member);
             Cookie cookie = new Cookie("user_id", map.get("id"));
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    private String register(@ModelAttribute Member member, Model model) throws SQLException {
+    private String register(@ModelAttribute MemberDto member, Model model) throws SQLException {
         log.debug("[register] id: {}, pw: {}, name: {}, addr: {}, phone: {}",
                 member.getId(), member.getPw(), member.getName(), member.getAddr(), member.getPhone());
         if(memberService.register(member)) {
@@ -61,21 +61,21 @@ public class UserController {
 
     @GetMapping("/logout")
     private String logout(HttpSession session) {
-        Member member = (Member)session.getAttribute("member");
+        MemberDto member = (MemberDto)session.getAttribute("member");
         log.debug("[logout] id: {}, pw: {}", member.getId(), member.getPw());
         session.invalidate();
         return "redirect:/";
     }
 
     @PostMapping("/member_modify")
-    private String memberModify(@ModelAttribute Member member, Model model, HttpSession session) throws SQLException {
+    private String memberModify(@ModelAttribute MemberDto member, Model model, HttpSession session) throws SQLException {
         memberService.update(member);
         session.setAttribute("member", member);
         return "redirect:/";
     }
 
     @GetMapping("/member_delete")
-    private String memberDelete(@ModelAttribute Member member, HttpSession session) throws SQLException {
+    private String memberDelete(@ModelAttribute MemberDto member, HttpSession session) throws SQLException {
         memberService.delete(member.getId());
         session.invalidate();
         return "redirect:/";
