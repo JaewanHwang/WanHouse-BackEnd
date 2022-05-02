@@ -11,7 +11,7 @@
 		<div class="row gx-4 gx-lg-5 justify-content-center">
 			<div class="col-md-10 col-lg-8 col-xl-7">
 				<h2 class="mb-5">게시판</h2>
-				<form method="post" action="${root}/board_insert.do">
+				<form method="post" action="${root}/board/board_insert">
 					<h3>제목</h3>
 					<textarea id="title" name="title" class="col-md-12 my-3 p-3" style="border: 1px solid black"
 						required="required"></textarea>

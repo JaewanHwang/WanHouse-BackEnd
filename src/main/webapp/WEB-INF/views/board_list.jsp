@@ -17,8 +17,7 @@
 				<div class="col-md-10 col-lg-8 col-xl-7">
 					<div class="site-heading">
 						<h1>Happy House</h1>
-						<span class="subheading">Kim Wansang / Yim Doyoung / Yun
-							Yeobeen</span>
+						<span class="subheading">Kim Wansang / Hwang Jaewan</span>
 					</div>
 				</div>
 			</div>
@@ -38,7 +37,7 @@
 					</thead>
 					<tbody>
 						<c:forEach items="${boardList}" var="board">
-							<tr onClick="location.href='${root }/board_detail.do?no=${board.no }'">
+							<tr onClick="location.href='${root }/board/board_detail?no=${board.no }'">
 								<td>${board.memberId}</td>
 								<td>${board.title}</td>
 								<td>${board.lastModified}</td>
@@ -53,7 +52,7 @@
 		<div class="row gx-4 gx-lg-5 justify-content-center">
 			<div class="col-md-10 col-lg-8 col-xl-7">
 				<button type="button" class="btn btn-primary"
-					onclick="move('/board_form.do')">등록</button>
+					onclick="move('/board/board_form')">등록</button>
 			</div>
 		</div>
 	</div>
