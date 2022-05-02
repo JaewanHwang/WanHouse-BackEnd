@@ -14,8 +14,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.ServletContextListener;
 
-//@EnableAspectJAutoProxy // <aop:aspectj-autoproxy></aop:aspectj-autoproxy> 설정
-@MapperScan(basePackages = {"com.ssafy.happyhouse.model.dao"}) // <mybatis-spring:scan base-package="com.ssafy.guestbook.model.mapper"/> 설정
+@EnableAspectJAutoProxy // <aop:aspectj-autoproxy></aop:aspectj-autoproxy> 설정
+@MapperScan(basePackages = {"com.ssafy.happyhouse.model.dao", "com.ssafy.happyhouse.model.mapper"}) // <mybatis-spring:scan base-package="com.ssafy.guestbook.model.mapper"/> 설정
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
