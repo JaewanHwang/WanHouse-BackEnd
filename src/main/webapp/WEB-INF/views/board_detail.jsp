@@ -30,14 +30,14 @@
 				<c:if test="${member.id eq board.memberId }">
 					<span>
 						<button type="button" class="btn btn-primary"
-							onclick="move('/board_modify_form?no=${board.no }&title=${board.title}&content=${board.content}&memberId=${board.memberId}')">수정</button>
+							onclick="move('/board/board_modify_form?no=${board.no }')">수정</button>
 						<button type="button" class="btn btn-primary"
-							onclick="move('/board_delete?no=${board.no }')">삭제</button>
+							onclick="move('/board/board_delete?no=${board.no }')">삭제</button>
 					</span>
 				</c:if>
 				<span>
 					<button type="button" style="float: right" class="btn btn-primary"
-						onclick="move('/board_list')">이전</button>
+						onclick="move('/board/board_list')">이전</button>
 				</span>
 			</div>
 		</div>

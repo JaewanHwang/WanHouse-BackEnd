@@ -1,17 +1,13 @@
 package com.ssafy.happyhouse.controller;
 
-import com.ssafy.happyhouse.model.dto.Board;
+import com.ssafy.happyhouse.model.dto.BoardDto;
 import com.ssafy.happyhouse.model.dto.MemberDto;
 import com.ssafy.happyhouse.model.service.BoardService;
-import com.ssafy.happyhouse.model.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpSession;
@@ -24,6 +20,7 @@ import java.util.List;
 public class BoardController {
 
     BoardService boardService;
+
     @Autowired
     public void setBoardService(BoardService boardService) {
         this.boardService = boardService;
@@ -31,7 +28,7 @@ public class BoardController {
 
     @GetMapping("/board_list")
     private String boardList(Model model) throws SQLException {
-        List<Board> boardList = boardService.selectBoardList();
+        List<BoardDto> boardList = boardService.selectBoardList();
         model.addAttribute("boardList", boardList);
         return "board_list";
     }
@@ -44,7 +41,7 @@ public class BoardController {
 
     @GetMapping("/board_form")
     private String boardForm(HttpSession session) {
-        MemberDto member = (MemberDto)session.getAttribute("member");
+        MemberDto member = (MemberDto) session.getAttribute("member");
         if (member == null) {
             return "redirect:/user/login_form";
         } else {
@@ -52,16 +49,39 @@ public class BoardController {
         }
     }
 
+    @GetMapping("/board_modify_form")
+    private String boardModifyForm(int no, HttpSession session, Model model) throws SQLException {
+        MemberDto member = (MemberDto) session.getAttribute("member");
+        model.addAttribute("board", boardService.selectBoard(no));
+        if (member == null) {
+            return "redirect:/user/login_form";
+        } else {
+            return "board_modify_form";
+        }
+    }
+
     @PostMapping("/board_insert")
-    private String boardInsert(Board board, HttpSession session) throws SQLException {
-        MemberDto member = (MemberDto)session.getAttribute("member");
+    private String boardInsert(BoardDto board, HttpSession session) throws SQLException {
+        MemberDto member = (MemberDto) session.getAttribute("member");
         System.out.println(board);
         if (member == null) {
             return "redirect:/user/login_form";
         } else {
             boardService.insertBoard(board);
-            return "redirect:/board/";
+            return "redirect:/board/board_list";
         }
+    }
+
+    @GetMapping("/board_delete")
+    private String boardDelete(@RequestParam int no) throws Exception {
+        boardService.deleteBoard(no);
+        return "redirect:/board/board_list";
+    }
+
+    @PostMapping("/board_modify")
+    private String boardModify(BoardDto boardDto) throws Exception {
+        boardService.updateBoard(boardDto);
+        return "redirect:/board/board_list";
     }
 }
 

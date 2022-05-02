@@ -19,9 +19,9 @@
 					<textarea id="content" name="content" class="col-md-12 my-3 p-3"
 						style="border: 1px solid black; height: 300px" required="required"></textarea>
 					<h3>작성자</h3>
-					<input type="text" value="${member.id}" class="col-md-12 my-3 p-3"
+					<input type="text" name="memberId" value="${member.id}" class="col-md-12 my-3 p-3"
 						style="border: 1px solid black" readonly="readonly"
-						required="required"></input>
+						required="required"/>
 					<div>
 						<button type="submit" class="btn btn-primary">등록</button>
 					</div>
