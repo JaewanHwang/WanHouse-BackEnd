@@ -13,40 +13,6 @@
 </head>
 <body>
 	<div class="container">
-		<header id="index_header" class="jumbotron text-center mb-1">
-			<img id="logo" src="/assets/img/happyhouse.png">
-		</header>
-		<!-- nav start -->
-		<nav class="navbar navbar-expand-sm bg-dark navbar-dark rounded">
-			<ul class="navbar-nav">
-				<li class="nav-item">
-					<a class="nav-link" href="#">Home</a>
-				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-						동네 정보
-					</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="#">APT 매매</a>
-						<a class="dropdown-item" href="#">APT 전월세</a>
-						<a class="dropdown-item" href="#">주택 매매</a>
-						<a class="dropdown-item" href="#">주택 전월세</a>
-						<a class="dropdown-item" href="#">상권 정보</a>
-						<a class="dropdown-item" href="#">환경 정보</a>
-					</div>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Notice</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">News</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Contact</a>
-				</li>
-			</ul>
-		</nav>
-
 		<section id="index_section">
 			<div class="card col-sm-12 mt-1" style="min-height: 850px;">
 				<div class="card-body">
@@ -85,12 +51,11 @@
 						<tbody id="searchResult"></tbody>
 					</table>
 				<div id="map" style="width:100%;height:500px;"></div>
-				<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ec5cbd4d32d470ab6524fb06eab344d8&libraries=services"></script>
-				<script type="text/javascript" src="js/map.js"></script>
+				<script type="text/javascript" src="//dapi.kakao.com/v2/houses/sdk.js?appkey=ec5cbd4d32d470ab6524fb06eab344d8&libraries=services"></script>
 				<script type="text/javascript">
 				let colorArr = ['table-primary','table-success','table-danger'];
 				$(document).ready(function(){					
-					$.get(root + "/map/sido"
+					$.get(root + "/house/sido"
 						,function(data, status){
 							$.each(data, function(index, vo) {
 								$("#sido").append("<option value='"+vo.sidoCode+"'>"+vo.sidoName+"</option>");
@@ -100,7 +65,7 @@
 					);
 				});
 				$(document).on("change", "#sido", function() {
-					$.get(root + "/map/gugun"
+					$.get(root + "/house/gugun"
 							,{sido: $("#sido").val()}
 							,function(data, status){
 								$("#gugun").empty();
@@ -113,7 +78,7 @@
 					);
 				});
 				$(document).on("change", "#gugun", function() {
-					$.get(root + "/map/dong"
+					$.get(root + "/house/dong"
 							,{gugun: $("#gugun").val()}
 							,function(data, status){
 								$("#dong").empty();
@@ -126,7 +91,7 @@
 					);
 				});
 				$(document).on("change", "#dong", function() {
-					$.get(root + "/map/apt"
+					$.get(root + "/house/apt"
 							,{dong: $("#dong").val()}
 							,function(data, status){
 								$("tbody").empty();
@@ -146,63 +111,6 @@
 							, "json"
 					);
 				});
-				
-				/*
-				$(document).on("click", "#aptSearchBtn", function() {
-					alert("검색");
-					var param = {
-							serviceKey:' *** APT 상세 매매 정보 API KEY *** ',
-							pageNo:encodeURIComponent('1'),
-							numOfRows:encodeURIComponent('10'),
-							LAWD_CD:encodeURIComponent($("#gugun").val()),
-							DEAL_YMD:encodeURIComponent('202110')
-					};
-					$.get('http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev'
-							,param
-							,function(data, status){
-						console.log(data);
-								var items = $(data).find('item');
-								var jsonArray = new Array();
-								items.each(function() {
-									var jsonObj	= new Object();
-									jsonObj.aptCode = $(this).find('일련번호').text();
-									jsonObj.aptName = $(this).find('아파트').text();
-									jsonObj.dongCode = $(this).find('법정동읍면동코드').text();
-									//jsonObj.dongName = $(this).find('').text();
-									//jsonObj.sidoName = $(this).find('').text();
-									//jsonObj.gugunName = $(this).find('').text();
-									jsonObj.buildYear = $(this).find('건축년도').text();
-									jsonObj.jibun = $(this).find('지번').text();
-									jsonObj.recentPirce = $(this).find('거래금액').text();
-										
-									jsonObj = JSON.stringify(jsonObj);
-									//String 형태로 파싱한 객체를 다시 json으로 변환
-									jsonArray.push(JSON.parse(jsonObj));
-								});
-								console.log(jsonArray);
-								//displayMarkers(jsonArray);
-							}
-							, "xml"
-					);
-					*/
-					
-					/* var xhr = new XMLHttpRequest();
-					var url = 'http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev';
-					var queryParams = '?' + encodeURIComponent('serviceKey') + '='+encodeURIComponent('***  API KEY  ***');
-					queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); 
-					queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10'); 
-					queryParams += '&' + encodeURIComponent('LAWD_CD') + '=' + encodeURIComponent($("#gugun").val()); 
-					queryParams += '&' + encodeURIComponent('DEAL_YMD') + '=' + encodeURIComponent('202110'); 
-					xhr.open('GET', url + queryParams);
-					xhr.onreadystatechange = function () {
-					    if (this.readyState == 4) {
-					    	console.log(this.responseXML);
-					        alert('Status: '+this.status+'nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'nBody: '+this.responseText);
-					    }
-					};
-
-					xhr.send(''); */
-				//});
 				</script>
 				</div>
 			</div>

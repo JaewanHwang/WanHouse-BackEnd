@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.happyhouse.model.mapper.HouseMapMapper">
+<mapper namespace="com.ssafy.happyhouse.model.mapper.HouseMapper">
 
 	<select id="getSido" resultType="sidoGugunCodeDto">
 		select left(sidoCode,2) sidoCode, sidoName
@@ -34,6 +34,18 @@
 		on left(h.dongcode,5) = left(gu.guguncode,5)
 		where dongCode = #{dong} 
 		order by aptName
+	</select>
+
+	<select id="getHouseDealsByAptCode" parameterType="int" resultType="houseDealDto">
+		select dealAmount, dealYear, dealMonth, dealDay, area, floor
+		from houseinfo hi join housedeal hd
+	   	on hi.aptCode = hd.aptCode
+		where hi.aptCode = #{aptCode};
+	</select>
+
+	<select id="getHouseInfo" parameterType="int" resultType="HouseInfoDto">
+		select * from houseinfo
+		where aptCode = #{aptCode};
 	</select>
 	
 </mapper>

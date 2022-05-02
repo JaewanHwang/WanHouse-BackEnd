@@ -17,7 +17,7 @@
 					class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
 					<li><a href="${root }/board/board_list"
 						class="nav-link text-white"> 게시판 </a></li>
-					<li><a href="${root }/housedeal/apt_list"
+					<li><a href="${root }/house/apt_list"
 						class="nav-link text-white"> 실거래가 조회 </a></li>
 				</ul>
 			</div>
