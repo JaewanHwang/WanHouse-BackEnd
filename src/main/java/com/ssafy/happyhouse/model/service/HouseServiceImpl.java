@@ -1,14 +1,14 @@
 package com.ssafy.happyhouse.model.service;
 
-import java.util.List;
-
 import com.ssafy.happyhouse.model.dto.HouseDealDto;
 import com.ssafy.happyhouse.model.dto.HouseInfoDto;
 import com.ssafy.happyhouse.model.dto.SidoGugunCodeDto;
+import com.ssafy.happyhouse.model.mapper.HouseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.happyhouse.model.mapper.HouseMapper;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class HouseServiceImpl implements HouseService {
@@ -32,8 +32,8 @@ public class HouseServiceImpl implements HouseService {
 	}
 
 	@Override
-	public List<HouseInfoDto> getAptInDong(String dong) throws Exception {
-		return houseMapper.getAptInDong(dong);
+	public List<HouseInfoDto> getAptInDong(Map<String, Integer> filters) throws Exception {
+		return houseMapper.getAptInDong(filters);
 	}
 
 	@Override

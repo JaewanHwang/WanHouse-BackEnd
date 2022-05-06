@@ -1,7 +1,5 @@
 package com.ssafy.happyhouse.controller;
 
-import java.util.List;
-
 import com.ssafy.happyhouse.model.dto.HouseInfoDto;
 import com.ssafy.happyhouse.model.dto.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.service.HouseService;
@@ -13,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -42,8 +43,14 @@ public class HouseController {
 	}
 	
 	@GetMapping("/apt")
-	public @ResponseBody ResponseEntity<List<HouseInfoDto>> apt(@RequestParam("dong") String dong) throws Exception {
-		return new ResponseEntity<List<HouseInfoDto>>(houseService.getAptInDong(dong), HttpStatus.OK);
+	public @ResponseBody ResponseEntity<List<HouseInfoDto>> apt(@RequestParam("dong") String dong,
+																@RequestParam("order") String order,
+																@RequestParam Map<String, Integer> filters
+//																@RequestParam(value = "area", required = false) Integer area,
+//																@RequestParam(value = "dealAmount", required = false) Integer dealAmount,
+//													|			@RequestParam(value = "buildYear", required = false) Integer buildYear
+	) throws Exception {
+		return new ResponseEntity<List<HouseInfoDto>>(houseService.getAptInDong(filters), HttpStatus.OK);
 	}
 
 	@GetMapping("/apt/{aptCode}")

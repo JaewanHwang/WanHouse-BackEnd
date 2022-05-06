@@ -4,8 +4,8 @@ import com.ssafy.happyhouse.model.dto.HouseDealDto;
 import com.ssafy.happyhouse.model.dto.HouseInfoDto;
 import com.ssafy.happyhouse.model.dto.SidoGugunCodeDto;
 
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 
 public interface HouseService {
@@ -16,7 +16,7 @@ public interface HouseService {
 
     List<HouseInfoDto> getDongInGugun(String gugun) throws Exception;
 
-    List<HouseInfoDto> getAptInDong(String dong) throws Exception;
+    List<HouseInfoDto> getAptInDong(Map<String, Integer> filters) throws Exception;
 
     List<HouseDealDto> getHouseDealsByAptCode(int aptCode) throws Exception;
 

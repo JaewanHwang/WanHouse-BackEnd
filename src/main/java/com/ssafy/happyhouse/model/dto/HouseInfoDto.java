@@ -4,6 +4,8 @@ public class HouseInfoDto {
 
 	private int aptCode;
 	private String aptName;
+
+	private String area;
 	private String dongCode;
 	private String dongName;
 	private String sidoName;
@@ -14,6 +16,7 @@ public class HouseInfoDto {
 	private String lng;
 	private String img;
 	private String recentPrice;
+
 
 	public int getAptCode() {
 		return aptCode;
@@ -29,6 +32,14 @@ public class HouseInfoDto {
 
 	public void setAptName(String aptName) {
 		this.aptName = aptName;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
 	}
 
 	public String getDongCode() {

@@ -1,12 +1,13 @@
 package com.ssafy.happyhouse.model.mapper;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import com.ssafy.happyhouse.model.dto.HouseDealDto;
 import com.ssafy.happyhouse.model.dto.HouseInfoDto;
 import com.ssafy.happyhouse.model.dto.SidoGugunCodeDto;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 
 @Mapper
@@ -18,7 +19,7 @@ public interface HouseMapper {
 
     List<HouseInfoDto> getDongInGugun(String gugun) throws SQLException;
 
-    List<HouseInfoDto> getAptInDong(String dong) throws SQLException;
+    List<HouseInfoDto> getAptInDong(Map<String, Integer> filters) throws SQLException;
 
     List<HouseDealDto> getHouseDealsByAptCode(int aptCode);
 
