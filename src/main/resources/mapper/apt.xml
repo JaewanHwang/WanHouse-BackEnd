@@ -25,7 +25,7 @@
     </select>
 
     <select id="getAptInDong" parameterType="map" resultType="houseInfoDto">
-        select distinct deals.aptCode, hd.area, aptName, buildYear, dongCode, dongName, jibun, lat, lng, sidoname, gugunname, recentPrice
+        select distinct deals.aptCode, round(hd.area + 0.0, 2) as area, aptName, buildYear, dongCode, dongName, jibun, lat, lng, sidoname, gugunname, recentPrice
         from (
         select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
         (select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where
