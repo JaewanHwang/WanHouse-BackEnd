@@ -43,9 +43,7 @@ public class HouseController {
 	}
 	
 	@GetMapping("/apt")
-	public @ResponseBody ResponseEntity<List<HouseInfoDto>> apt(@RequestParam("dong") String dong,
-																@RequestParam("order") String order,
-																@RequestParam Map<String, Integer> filters
+	public @ResponseBody ResponseEntity<List<HouseInfoDto>> apt(@RequestParam Map<String, Integer> filters
 //																@RequestParam(value = "area", required = false) Integer area,
 //																@RequestParam(value = "dealAmount", required = false) Integer dealAmount,
 //													|			@RequestParam(value = "buildYear", required = false) Integer buildYear
