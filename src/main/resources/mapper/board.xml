@@ -6,6 +6,9 @@
 
     <insert id="insertBoard" parameterType="BoardDto">
         insert into board(title, content, memberId) values(#{title}, #{content}, #{memberId})
+        <selectKey resultType="int" keyProperty="no" order="AFTER">
+            select last_insert_id()
+        </selectKey>
     </insert>
 
     <delete id="deleteBoard" parameterType="int">

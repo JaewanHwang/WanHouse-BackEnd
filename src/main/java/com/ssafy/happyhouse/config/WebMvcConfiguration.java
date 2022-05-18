@@ -1,13 +1,11 @@
 package com.ssafy.happyhouse.config;
 
-import com.ssafy.happyhouse.interceptor.LoginCheckInterceptor;
 import com.ssafy.happyhouse.listener.RootPathListener;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -33,11 +31,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     // interceptor 등록
     // 방법1: 인터셉터 직접 생성 후 등록(bean등록X)
     // 방법2: bean등록된 인터셉터를 @Autowired로 주입받아 등록하기
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        // 방법1 사용
-//        registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/*/auth/**");
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        // 방법1 사용
+//        registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/board/**").addPathPatterns("/house/**");
+//    }
 
     // listener 등록
     @Bean

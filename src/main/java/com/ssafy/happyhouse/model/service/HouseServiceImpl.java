@@ -45,5 +45,4 @@ public class HouseServiceImpl implements HouseService {
 	public HouseInfoDto getHouseInfo(int aptCode) throws Exception{
 		return houseMapper.getHouseInfo(aptCode);
 	}
-
 }
