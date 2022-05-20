@@ -56,7 +56,7 @@
     </select>
 
 
-    <select id="getHouseDealsByAptCode" parameterType="int" resultType="houseDealDto">
+    <select id="getHouseDealsByAptCode" parameterType="biginteger" resultType="houseDealDto">
         select dealAmount, dealYear, dealMonth, dealDay, area, floor
         from houseinfo hi
                  join housedeal hd
@@ -64,7 +64,7 @@
         where hi.aptCode = #{aptCode};
     </select>
 
-    <select id="getHouseInfo" parameterType="int" resultType="HouseInfoDto">
+    <select id="getHouseInfo" parameterType="biginteger" resultType="HouseInfoDto">
         select *
         from houseinfo
         where aptCode = #{aptCode};

@@ -1,17 +1,19 @@
 package com.ssafy.happyhouse.controller;
 
+import com.ssafy.happyhouse.model.dto.HouseDetailResponseDto;
 import com.ssafy.happyhouse.model.dto.HouseInfoDto;
 import com.ssafy.happyhouse.model.dto.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.service.HouseService;
+import com.ssafy.happyhouse.model.service.OpenApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +27,9 @@ public class HouseController {
 
 	@Autowired
 	private HouseService houseService;
+
+	@Autowired
+	private OpenApiService openApiService;
 	
 	@GetMapping("/sido")
 	public @ResponseBody ResponseEntity<List<SidoGugunCodeDto>> sido() throws Exception {
@@ -52,10 +57,14 @@ public class HouseController {
 	}
 
 	@GetMapping("/apt/{aptCode}")
-	public String getAptDetail(@PathVariable int aptCode, Model model) throws Exception {
-		model.addAttribute("houseInfo", houseService.getHouseInfo(aptCode));
-		model.addAttribute("houseDeals", houseService.getHouseDealsByAptCode(aptCode));
-		return "apt_detail";
+	public ResponseEntity<?> getAptDetail(@PathVariable BigInteger aptCode, @RequestParam(required = false) String kaptCode) throws Exception {
+		HouseDetailResponseDto houseDetailResponseDto = new HouseDetailResponseDto();
+		houseDetailResponseDto.setHouseInfo(houseService.getHouseInfo(aptCode));
+		if (kaptCode != null) {
+			houseDetailResponseDto.setHouseDetailInfo(openApiService.fetchHouseInfo(kaptCode));
+		}
+		houseDetailResponseDto.setHouseDealList(houseService.getHouseDealsByAptCode(aptCode));
+		return ResponseEntity.ok().body(houseDetailResponseDto);
 	}
 
 	@GetMapping("/apt_list")

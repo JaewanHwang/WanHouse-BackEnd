@@ -7,6 +7,7 @@ import com.ssafy.happyhouse.model.mapper.HouseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -37,12 +38,12 @@ public class HouseServiceImpl implements HouseService {
 	}
 
 	@Override
-	public List<HouseDealDto> getHouseDealsByAptCode(int aptCode) throws Exception{
+	public List<HouseDealDto> getHouseDealsByAptCode(BigInteger aptCode) throws Exception{
 		return houseMapper.getHouseDealsByAptCode(aptCode);
 	}
 
 	@Override
-	public HouseInfoDto getHouseInfo(int aptCode) throws Exception{
+	public HouseInfoDto getHouseInfo(BigInteger aptCode) throws Exception{
 		return houseMapper.getHouseInfo(aptCode);
 	}
 }
