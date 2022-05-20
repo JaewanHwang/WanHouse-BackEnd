@@ -57,11 +57,11 @@ public class HouseController {
 	}
 
 	@GetMapping("/apt/{aptCode}")
-	public ResponseEntity<?> getAptDetail(@PathVariable BigInteger aptCode, @RequestParam(required = false) String kaptCode) throws Exception {
+	public ResponseEntity<?> getAptDetail(@PathVariable BigInteger aptCode) throws Exception {
 		HouseDetailResponseDto houseDetailResponseDto = new HouseDetailResponseDto();
 		houseDetailResponseDto.setHouseInfo(houseService.getHouseInfo(aptCode));
-		if (kaptCode != null) {
-			houseDetailResponseDto.setHouseDetailInfo(openApiService.fetchHouseInfo(kaptCode));
+		if (houseDetailResponseDto.getHouseInfo().getKaptCode() != null) {
+			houseDetailResponseDto.setHouseDetailInfo(openApiService.fetchHouseInfo(houseDetailResponseDto.getHouseInfo().getKaptCode() ));
 		}
 		houseDetailResponseDto.setHouseDealList(houseService.getHouseDealsByAptCode(aptCode));
 		return ResponseEntity.ok().body(houseDetailResponseDto);

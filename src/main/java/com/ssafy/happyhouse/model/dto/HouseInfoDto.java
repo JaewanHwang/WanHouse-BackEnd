@@ -8,6 +8,7 @@ import java.math.BigInteger;
 public class HouseInfoDto {
 
 	private BigInteger aptCode;
+	private String kaptCode; // 단지 코드
 	private String aptName;
 	private String area;
 	private String dongCode;
