@@ -2,17 +2,19 @@ package com.ssafy.happyhouse.controller;
 
 
 import com.ssafy.happyhouse.model.dto.MemberDto;
+import com.ssafy.happyhouse.model.service.JwtServiceImpl;
 import com.ssafy.happyhouse.model.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -20,65 +22,111 @@ import java.util.Map;
 @Controller
 public class UserController {
 
-    MemberService memberService;
+    private MemberService memberService;
+    private JwtServiceImpl jwtService;
+
+    private static final String SUCCESS = "success";
+    private static final String FAIL = "fail";
+
+    @Autowired
+    public void setJwtService(JwtServiceImpl jwtService) {
+        this.jwtService = jwtService;
+    }
+
     @Autowired
     public void setMemberService(MemberService memberService) {
         this.memberService = memberService;
     }
 
     @PostMapping("/login")
-    private String login(@RequestParam Map<String, String> map, Model model, HttpSession session, HttpServletResponse response) throws SQLException {
-        log.debug("[login] id: {},  pw: {}, remember-me: {}", map.get("id"), map.get("pw"), map.get("idsave"));
-        MemberDto member = memberService.login(map.get("id"), map.get("pw"));
-        if (member != null) {
-            session.setAttribute("member", member);
-            Cookie cookie = new Cookie("user_id", map.get("id"));
-            cookie.setPath("/");
-            if ("remember-me".equals(map.get("idsave"))) {
-                cookie.setMaxAge(60*60*24*365);
+    private ResponseEntity<Map<String, Object>> login(@RequestBody MemberDto memberDto) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        try {
+            MemberDto loginUser = memberService.login(memberDto.getId(), memberDto.getPw());
+            if (loginUser != null) {
+                String token = jwtService.create("userid", loginUser.getId(), "access-token");// key, data, subject
+                log.debug("로그인 토큰정보 : {}", token);
+                resultMap.put("access-token", token);
+                resultMap.put("message", SUCCESS);
+                status = HttpStatus.ACCEPTED;
             } else {
-                cookie.setMaxAge(0);
+                resultMap.put("message", FAIL);
+                status = HttpStatus.NOT_FOUND;
             }
-            response.addCookie(cookie);
-            return "redirect:/";
+        } catch (Exception e) {
+            log.error("로그인 실패 : {}", e);
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> signUp(@RequestBody MemberDto memberDto) throws SQLException {
+        log.debug("memberDto info : {}", memberDto);
+        if (memberService.getMember(memberDto.getId()) == null) {
+            memberService.register(memberDto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
-            model.addAttribute("errorMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            return "login_form";
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
-    @PostMapping("/register")
-    private String register(@ModelAttribute MemberDto member, Model model) throws SQLException {
-        log.debug("[register] id: {}, pw: {}, name: {}, addr: {}, phone: {}",
-                member.getId(), member.getPw(), member.getName(), member.getAddr(), member.getPhone());
-        if(memberService.register(member)) {
-            return "redirect:login_form";
+    @GetMapping("/info/{id}")
+    public ResponseEntity<Map<String, Object>> getUserInfo(
+            @PathVariable("id") String userid,
+            HttpServletRequest request) {
+        log.debug("userid : {} ", userid);
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        if (jwtService.isUsable(request.getHeader("access-token"))) {
+            log.info("사용 가능한 토큰!!!");
+            try {
+//				로그인 사용자 정보.
+                MemberDto memberDto = memberService.getMember(userid);
+                resultMap.put("userInfo", memberDto);
+                resultMap.put("message", SUCCESS);
+                status = HttpStatus.ACCEPTED;
+            } catch (Exception e) {
+                log.error("정보조회 실패 : {}", e);
+                resultMap.put("message", e.getMessage());
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
         } else {
-            model.addAttribute("errorMsg", "이미 등록된 id 입니다.");
-            return "register_form";
+            log.error("사용 불가능 토큰!!!");
+            resultMap.put("message", FAIL);
+            status = HttpStatus.NOT_ACCEPTABLE;
         }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
     @GetMapping("/logout")
-    private String logout(HttpSession session) {
-        MemberDto member = (MemberDto)session.getAttribute("member");
-        log.debug("[logout] id: {}, pw: {}", member.getId(), member.getPw());
+    private ResponseEntity<?> logout(HttpServletRequest request, HttpSession session) {
         session.invalidate();
-        return "redirect:/";
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/member_modify")
-    private String memberModify(@ModelAttribute MemberDto member, Model model, HttpSession session) throws SQLException {
-        memberService.update(member);
-        session.setAttribute("member", member);
-        return "redirect:/";
+    @PutMapping("/{id}")
+    private ResponseEntity<?> modifyUser(@RequestBody MemberDto memberDto, @PathVariable String id, HttpServletRequest request, HttpSession session) throws SQLException {
+        if (jwtService.parseJWT(request.getHeader("access-token")).equals(id)) {
+            memberService.update(memberDto);
+            session.setAttribute("member", memberDto);
+            return ResponseEntity.noContent().build();
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
-    @GetMapping("/member_delete")
-    private String memberDelete(@ModelAttribute MemberDto member, HttpSession session) throws SQLException {
-        memberService.delete(member.getId());
-        session.invalidate();
-        return "redirect:/";
+    @DeleteMapping("/{id}")
+    private ResponseEntity<?> deleteUser(@PathVariable String id, HttpServletRequest request, HttpSession session) throws SQLException {
+        if (jwtService.parseJWT(request.getHeader("access-token")).equals(id)) {
+            memberService.delete(id);
+            session.invalidate();
+            return ResponseEntity.noContent().build();
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
 }

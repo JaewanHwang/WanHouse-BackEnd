@@ -18,7 +18,7 @@
 
 <!-- userkey삽입 -->
 <script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d2509e5cf86b0c3f7a36eda351e19520"></script>
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ec5cbd4d32d470ab6524fb06eab344d8&libraries=services"></script>
 
 <script>
 	

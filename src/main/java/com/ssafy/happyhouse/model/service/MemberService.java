@@ -1,11 +1,11 @@
 package com.ssafy.happyhouse.model.service;
 
-import java.sql.SQLException;
-
-import com.ssafy.happyhouse.model.mapper.MemberMapper;
 import com.ssafy.happyhouse.model.dto.MemberDto;
+import com.ssafy.happyhouse.model.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
 
 @Service
 public class MemberService {

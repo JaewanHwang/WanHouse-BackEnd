@@ -1,21 +1,29 @@
 package com.ssafy.happyhouse.config;
 
+import com.ssafy.happyhouse.interceptor.JwtInterceptor;
 import com.ssafy.happyhouse.listener.RootPathListener;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import javax.servlet.ServletContextListener;
+import java.util.Arrays;
 
 @EnableAspectJAutoProxy // <aop:aspectj-autoproxy></aop:aspectj-autoproxy> 설정
-@MapperScan(basePackages = {"com.ssafy.happyhouse.model.dao", "com.ssafy.happyhouse.model.mapper"}) // <mybatis-spring:scan base-package="com.ssafy.guestbook.model.mapper"/> 설정
+@MapperScan(basePackages = {"com.ssafy.happyhouse.model.dao", "com.ssafy.happyhouse.model.mapper"})
+// <mybatis-spring:scan base-package="com.ssafy.guestbook.model.mapper"/> 설정
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
+    private JwtInterceptor jwtInterceptor;
+    @Autowired
+    public void setJwtInterceptor(JwtInterceptor jwtInterceptor) {
+        this.jwtInterceptor = jwtInterceptor;
+    }
+
 
     // view-controller 등록
     @Override
@@ -26,6 +34,14 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addViewController("/board/board_form").setViewName("board_form");
         registry.addViewController("/board/board_modify_form").setViewName("board_modify_form");
 
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")// 기본 적용 경로
+//				.excludePathPatterns(EXCLUDE_PATHS);// 적용 제외 경로
+        registry.addInterceptor(jwtInterceptor).addPathPatterns("/user/**", "/board/**", "/house/**") // 기본 적용 경로
+                .excludePathPatterns(Arrays.asList("/user/info", "/user/login", "/user"));// 적용 제외 경로
     }
 
     // interceptor 등록
@@ -53,5 +69,21 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 //        registry.addResourceHandler("/img/profile/**").addResourceLocations("/resources/img/profile/");
+    }
+
+    //  Interceptor를 이용해서 처리하므로 전역의 Cross Origin 처리를 해준다.
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+//		default 설정.
+//		Allow all origins.
+//		Allow "simple" methods GET, HEAD and POST.
+//		Allow all headers.
+//		Set max age to 1800 seconds (30 minutes).
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+//			.allowedOrigins("http://localhost:8080", "http://localhost:8081")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//			.allowedHeaders("*")
+                .maxAge(6000);
     }
 }

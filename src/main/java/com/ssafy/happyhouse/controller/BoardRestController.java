@@ -15,7 +15,6 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/board")
 @RestController
-@CrossOrigin({"*"})
 public class BoardRestController {
 
     private BoardService boardService;
