@@ -1,87 +1,79 @@
 package com.ssafy.happyhouse.controller;
 
 import com.ssafy.happyhouse.model.dto.BoardDto;
-import com.ssafy.happyhouse.model.dto.MemberDto;
 import com.ssafy.happyhouse.model.service.BoardService;
+import com.ssafy.happyhouse.model.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
 
 @Slf4j
 @RequestMapping("/board")
-@Controller
+@RestController
 public class BoardController {
 
-    BoardService boardService;
+    private BoardService boardService;
+    private JwtService jwtService;
+
+    @Autowired
+    public void setJwtService(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
 
     @Autowired
     public void setBoardService(BoardService boardService) {
         this.boardService = boardService;
     }
 
-    @GetMapping("/board_list")
-    private String boardList(Model model) throws SQLException {
+    @GetMapping
+    private ResponseEntity<List<BoardDto>> boardList() throws SQLException {
         List<BoardDto> boardList = boardService.selectBoardList();
-        model.addAttribute("boardList", boardList);
-        return "board_list";
-    }
-
-    @GetMapping("/board_detail")
-    private String boardDetail(int no, Model model) throws SQLException {
-        model.addAttribute("board", boardService.selectBoard(no));
-        return "board_detail";
-    }
-
-    @GetMapping("/board_form")
-    private String boardForm(HttpSession session) {
-        MemberDto member = (MemberDto) session.getAttribute("member");
-        if (member == null) {
-            return "redirect:/user/login_form";
-        } else {
-            return "board_form";
+        if (boardList.size() > 0) {
+            return new ResponseEntity<>(boardList, HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/board_modify_form")
-    private String boardModifyForm(int no, HttpSession session, Model model) throws SQLException {
-        MemberDto member = (MemberDto) session.getAttribute("member");
-        model.addAttribute("board", boardService.selectBoard(no));
-        if (member == null) {
-            return "redirect:/user/login_form";
-        } else {
-            return "board_modify_form";
+    @GetMapping("/{boardNo}")
+    private ResponseEntity<BoardDto> boardDetail(@PathVariable int boardNo) throws SQLException {
+        BoardDto boardDto = boardService.selectBoard(boardNo);
+        if (boardDto != null) {
+            return ResponseEntity.ok().body(boardDto);
         }
+        return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/board_insert")
-    private String boardInsert(BoardDto board, HttpSession session) throws SQLException {
-        MemberDto member = (MemberDto) session.getAttribute("member");
-        System.out.println(board);
-        if (member == null) {
-            return "redirect:/user/login_form";
-        } else {
-            boardService.insertBoard(board);
-            return "redirect:/board/board_list";
+    @PostMapping
+    private ResponseEntity<?> boardInsert(@RequestBody BoardDto boarDto) throws SQLException {
+        boardService.insertBoard(boarDto);
+        return ResponseEntity.created(URI.create("/board/" + boarDto.getBoardNo())).build();
+    }
+
+    @DeleteMapping("/{boardNo}")
+    private ResponseEntity<?> boardDelete(@PathVariable int boardNo, HttpServletRequest request) throws Exception {
+        BoardDto registeredBoard = boardService.selectBoard(boardNo);
+        if (registeredBoard != null && jwtService.parseJWT(request.getHeader("access-token")).equals(registeredBoard.getUserId())) {
+            boardService.deleteBoard(boardNo);
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/board_delete")
-    private String boardDelete(@RequestParam int no) throws Exception {
-        boardService.deleteBoard(no);
-        return "redirect:/board/board_list";
-    }
-
-    @PostMapping("/board_modify")
-    private String boardModify(BoardDto boardDto) throws Exception {
-        boardService.updateBoard(boardDto);
-        return "redirect:/board/board_list";
+    @PutMapping("/{boardNo}")
+    private ResponseEntity<?> boardModify(@PathVariable int boardNo, @RequestBody BoardDto boardDto, HttpServletRequest request) throws Exception {
+        BoardDto registeredBoard = boardService.selectBoard(boardNo);
+        if (registeredBoard != null && jwtService.parseJWT(request.getHeader("access-token")).equals(registeredBoard.getUserId())) {
+            boardService.updateBoard(boardDto);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
 

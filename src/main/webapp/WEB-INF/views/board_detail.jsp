@@ -32,7 +32,7 @@
 						<button type="button" class="btn btn-primary"
 							onclick="move('/board/board_modify_form?no=${board.no }')">수정</button>
 						<button type="button" class="btn btn-primary"
-							onclick="move('/board/board_delete?no=${board.no }')">삭제</button>
+							onclick="move('/board/board_delete?boardNo=${board.no }')">삭제</button>
 					</span>
 				</c:if>
 				<span>

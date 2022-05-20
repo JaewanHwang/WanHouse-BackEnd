@@ -11,11 +11,11 @@ public interface BoardMapper {
 
     boolean deleteBoard(int boardNo) throws SQLException;
 
-    boolean insertBoard(BoardDto board) throws SQLException;
+    boolean insertBoard(BoardDto boardDto) throws SQLException;
 
     BoardDto selectBoard(int boardNo) throws SQLException;
 
     List<BoardDto> selectBoardList() throws SQLException;
 
-    boolean updateBoard(BoardDto board) throws SQLException;
+    boolean updateBoard(BoardDto boardDto) throws SQLException;
 }

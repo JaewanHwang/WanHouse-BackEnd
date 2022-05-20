@@ -1,12 +1,8 @@
 package com.ssafy.happyhouse.model.dto;
 
-import lombok.*;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class HouseDealDto {
 	private String dealAmount;
 	private int dealYear;

@@ -5,18 +5,18 @@
 <mapper namespace="com.ssafy.happyhouse.model.mapper.BoardMapper">
 
     <insert id="insertBoard" parameterType="BoardDto">
-        insert into board(title, content, memberId) values(#{title}, #{content}, #{memberId})
-        <selectKey resultType="int" keyProperty="no" order="AFTER">
+        insert into board(title, content, userId) values(#{title}, #{content}, #{userId})
+        <selectKey resultType="int" keyProperty="boardNo" order="AFTER">
             select last_insert_id()
         </selectKey>
     </insert>
 
     <delete id="deleteBoard" parameterType="int">
-        delete from board where no = #{boardNo}
+        delete from board where boardNo = #{boardNo}
     </delete>
 
     <select id="selectBoard" parameterType="int" resultType="BoardDto">
-        select * from board where no = #{boardNo}
+        select * from board where boardNo = #{boardNo}
     </select>
 
     <select id="selectBoardList" resultType="BoardDto">
@@ -24,7 +24,7 @@
     </select>
 
     <update id="updateBoard" parameterType="BoardDto">
-        update board set title = #{title}, content = #{content} where no = #{no}
+        update board set title = #{title}, content = #{content} where boardNo = #{boardNo}
     </update>
 
 </mapper>

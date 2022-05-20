@@ -1,18 +1,14 @@
 package com.ssafy.happyhouse.model.dto;
 
-import lombok.*;
+import lombok.Data;
 
 import java.sql.Timestamp;
 
-@Setter
-@Getter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class BoardDto {
-	private int no;
+	private int boardNo;
 	private String title;
 	private String content;
 	private Timestamp lastModified;
-	private String memberId;
+	private String userId;
 }

@@ -2,8 +2,7 @@ package com.ssafy.happyhouse.model.service;
 
 import com.ssafy.happyhouse.exception.UnauthorizedException;
 import io.jsonwebtoken.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -11,13 +10,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.Map;
 
+@Slf4j
 @Service
 public class JwtServiceImpl implements JwtService {
-
-	public static final Logger logger = LoggerFactory.getLogger(JwtServiceImpl.class);
-
+	
 	private static final String SALT = "jaewansang";
 	private static final int EXPIRE_MINUTES = 60;
 
@@ -34,15 +31,16 @@ public class JwtServiceImpl implements JwtService {
 		return jwt;
 	}
 
-	private byte[] generateKey() {
+	@Override
+	public byte[] generateKey() {
 		byte[] key = null;
 		try {
 			key = SALT.getBytes("UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			if (logger.isInfoEnabled()) {
+			if (log.isInfoEnabled()) {
 				e.printStackTrace();
 			} else {
-				logger.error("Making JWT Key Error ::: {}", e.getMessage());
+				log.error("Making JWT Key Error ::: {}", e.getMessage());
 			}
 		}
 
@@ -56,10 +54,10 @@ public class JwtServiceImpl implements JwtService {
 			Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
 			return true;
 		} catch (Exception e) {
-//			if (logger.isInfoEnabled()) {
+//			if (log.isInfoEnabled()) {
 //				e.printStackTrace();
 //			} else {
-			logger.error(e.getMessage());
+			log.error(e.getMessage());
 //			}
 //			throw new UnauthorizedException();
 //			개발환경
@@ -68,7 +66,7 @@ public class JwtServiceImpl implements JwtService {
 	}
 
 	@Override
-	public Map<String, Object> parseJWT(String key) {
+	public String parseJWT(String key) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 				.getRequest();
 		String jwt = request.getHeader("access-token");
@@ -76,10 +74,10 @@ public class JwtServiceImpl implements JwtService {
 		try {
 			claims = Jwts.parser().setSigningKey(SALT.getBytes("UTF-8")).parseClaimsJws(jwt);
 		} catch (Exception e) {
-//			if (logger.isInfoEnabled()) {
+//			if (log.isInfoEnabled()) {
 //				e.printStackTrace();
 //			} else {
-			logger.error(e.getMessage());
+			log.error(e.getMessage());
 //			}
 			throw new UnauthorizedException();
 //			개발환경
@@ -87,9 +85,7 @@ public class JwtServiceImpl implements JwtService {
 //			testMap.put("userid", userid);
 //			return testMap;
 		}
-		Map<String, Object> value = claims.getBody();
-		logger.info("value : {}", value);
-		return value;
+		return claims.getBody().get("userId", String.class);
 	}
 
 
