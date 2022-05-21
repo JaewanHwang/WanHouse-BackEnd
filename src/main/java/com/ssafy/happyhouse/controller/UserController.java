@@ -2,8 +2,8 @@ package com.ssafy.happyhouse.controller;
 
 
 import com.ssafy.happyhouse.model.dto.UserDto;
-import com.ssafy.happyhouse.model.service.JwtService;
-import com.ssafy.happyhouse.model.service.UserService;
+import com.ssafy.happyhouse.model.service.interfaces.JwtService;
+import com.ssafy.happyhouse.model.service.interfaces.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,9 +42,9 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
-            UserDto loginUser = userService.login(userDto);
-            if (loginUser != null) {
-                String token = jwtService.create("userId", loginUser.getUserId(), "access-token");// key, data, subject
+            UserDto registeredUser = userService.login(userDto);
+            if (registeredUser != null) {
+                String token = jwtService.createJWT("userId", registeredUser.getUserId(), "access-token");// key, data, subject
                 log.debug("로그인 토큰정보 : {}", token);
                 resultMap.put("access-token", token);
                 resultMap.put("message", SUCCESS);
@@ -58,6 +58,7 @@ public class UserController {
             resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+
         return new ResponseEntity<>(resultMap, status);
     }
 
@@ -79,7 +80,7 @@ public class UserController {
         log.debug("userId : {} ", userid);
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
-        if (jwtService.isUsable(request.getHeader("access-token"))) {
+        if (jwtService.isValidToken(request.getHeader("access-token"))) {
             log.info("사용 가능한 토큰!!!");
             try {
 //				로그인 사용자 정보.

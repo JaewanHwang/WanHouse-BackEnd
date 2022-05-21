@@ -2,8 +2,10 @@ package com.ssafy.happyhouse.model.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.ssafy.happyhouse.config.KeyProperties;
 import com.ssafy.happyhouse.model.dto.HouseDetailInfoDto;
-import org.springframework.beans.factory.annotation.Value;
+import com.ssafy.happyhouse.model.service.interfaces.OpenApiService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -16,15 +18,22 @@ import java.net.URLEncoder;
 @Service
 public class OpenApiServiceImpl implements OpenApiService {
 
-    @Value("${open-api-key}")
-    private String openApiKey;
+//    @Value("${open-api-key}")
+//    private String openApiKey;
+
+    private KeyProperties keyProperties;
+
+    @Autowired
+    public void setKeyProperties(KeyProperties keyProperties) {
+        this.keyProperties = keyProperties;
+    }
 
     @Override
     public HouseDetailInfoDto fetchHouseInfo(String kaptCode) throws IOException {
 
-        System.out.println(openApiKey);
+        System.out.println(keyProperties.getOpenApiKey());
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/AptBasisInfoService1/getAphusDtlInfo"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + openApiKey); /*Service Key*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + keyProperties.getOpenApiKey()); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("kaptCode", "UTF-8") + "=" + URLEncoder.encode(kaptCode, "UTF-8")); /*단지코드*/
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

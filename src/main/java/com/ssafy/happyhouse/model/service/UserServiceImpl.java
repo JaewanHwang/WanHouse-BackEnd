@@ -2,6 +2,7 @@ package com.ssafy.happyhouse.model.service;
 
 import com.ssafy.happyhouse.model.dto.UserDto;
 import com.ssafy.happyhouse.model.mapper.UserMapper;
+import com.ssafy.happyhouse.model.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

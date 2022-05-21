@@ -1,8 +1,8 @@
 package com.ssafy.happyhouse.controller;
 
 import com.ssafy.happyhouse.model.dto.BoardDto;
-import com.ssafy.happyhouse.model.service.BoardService;
-import com.ssafy.happyhouse.model.service.JwtService;
+import com.ssafy.happyhouse.model.service.interfaces.BoardService;
+import com.ssafy.happyhouse.model.service.interfaces.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

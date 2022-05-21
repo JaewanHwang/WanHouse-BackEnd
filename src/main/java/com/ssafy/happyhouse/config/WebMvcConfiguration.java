@@ -4,6 +4,7 @@ import com.ssafy.happyhouse.interceptor.JwtInterceptor;
 import com.ssafy.happyhouse.listener.RootPathListener;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 @EnableAspectJAutoProxy // <aop:aspectj-autoproxy></aop:aspectj-autoproxy> 설정
 @MapperScan(basePackages = {"com.ssafy.happyhouse.model.dao", "com.ssafy.happyhouse.model.mapper"})
 // <mybatis-spring:scan base-package="com.ssafy.guestbook.model.mapper"/> 설정
+@EnableConfigurationProperties(KeyProperties.class)
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
     private JwtInterceptor jwtInterceptor;

@@ -4,6 +4,7 @@ import com.ssafy.happyhouse.model.dto.HouseDealDto;
 import com.ssafy.happyhouse.model.dto.HouseInfoDto;
 import com.ssafy.happyhouse.model.dto.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.mapper.HouseMapper;
+import com.ssafy.happyhouse.model.service.interfaces.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

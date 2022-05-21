@@ -2,6 +2,7 @@ package com.ssafy.happyhouse.model.service;
 
 import com.ssafy.happyhouse.model.dto.BoardDto;
 import com.ssafy.happyhouse.model.mapper.BoardMapper;
+import com.ssafy.happyhouse.model.service.interfaces.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
