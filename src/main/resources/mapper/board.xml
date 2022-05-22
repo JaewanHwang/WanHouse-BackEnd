@@ -75,6 +75,10 @@
         delete from comment where commentNo = #{commentNo}
     </delete>
 
+    <update id="updateComment" parameterType="CommentDto">
+        update comment set comment = #{comment} where commentNo = #{commentNo}
+    </update>
+
     <update id="likeComment" parameterType="int">
         update comment set `like` = `like` + 1 where commentNo = #{commentNO}
     </update>

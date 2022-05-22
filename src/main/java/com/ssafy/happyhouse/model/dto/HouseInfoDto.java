@@ -17,8 +17,8 @@ public class HouseInfoDto {
 	private String gugunName;
 	private int buildYear;
 	private String jibun;
-	private String lat;
-	private String lng;
+	private double lat;
+	private double lng;
 	private String img;
 	private String recentPrice;
 

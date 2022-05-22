@@ -1,8 +1,6 @@
 package com.ssafy.happyhouse.model.service.interfaces;
 
-import com.ssafy.happyhouse.model.dto.HouseDealDto;
-import com.ssafy.happyhouse.model.dto.HouseInfoDto;
-import com.ssafy.happyhouse.model.dto.SidoGugunCodeDto;
+import com.ssafy.happyhouse.model.dto.*;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -17,9 +15,17 @@ public interface HouseService {
 
     List<HouseInfoDto> getDongInGugun(String gugun) throws Exception;
 
-    List<HouseInfoDto> getAptInDong(Map<String, Integer> filters) throws Exception;
+    List<HouseInfoDto> getApts(Map<String, Integer> filters) throws Exception;
 
     List<HouseDealDto> getHouseDealsByAptCode(BigInteger aptCode) throws Exception;
 
     HouseInfoDto getHouseInfo(BigInteger aptCode) throws Exception;
+
+    List<DongDto> getDongs(String keyword);
+
+    void likeThisApt(BigInteger aptCode, String userId);
+
+    void unlikeThisApt(BigInteger aptCode, String userId);
+
+    List<LikedHouseDto> getLikedApts(String userId);
 }

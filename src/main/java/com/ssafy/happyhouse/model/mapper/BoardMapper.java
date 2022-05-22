@@ -31,5 +31,8 @@ public interface BoardMapper {
     void deleteComment(int commentNo);
 
     void likeComment(int commentNo);
+
+    void updateComment(CommentDto commentDto);
+
 }
 

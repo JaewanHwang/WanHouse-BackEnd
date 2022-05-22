@@ -1,8 +1,6 @@
 package com.ssafy.happyhouse.model.mapper;
 
-import com.ssafy.happyhouse.model.dto.HouseDealDto;
-import com.ssafy.happyhouse.model.dto.HouseInfoDto;
-import com.ssafy.happyhouse.model.dto.SidoGugunCodeDto;
+import com.ssafy.happyhouse.model.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.math.BigInteger;
@@ -20,9 +18,17 @@ public interface HouseMapper {
 
     List<HouseInfoDto> getDongInGugun(String gugun) throws SQLException;
 
-    List<HouseInfoDto> getAptInDong(Map<String, Integer> filters) throws SQLException;
-
     List<HouseDealDto> getHouseDealsByAptCode(BigInteger aptCode);
 
     HouseInfoDto getHouseInfo(BigInteger aptCode);
+
+    List<HouseInfoDto> getApts(Map<String, Integer> filters);
+
+    List<DongDto> getDongs(String keyword);
+
+    void likeThisApt(Map<String, Object> parameterMap);
+
+    void unlikeThisApt(Map<String, Object> parameterMap);
+
+    List<LikedHouseDto> selectLikedApts(String userId);
 }

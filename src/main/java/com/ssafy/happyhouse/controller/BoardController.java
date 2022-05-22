@@ -88,6 +88,14 @@ public class BoardController {
         }
     }
 
+    @PutMapping("/{boardNo}/comments/{commentNo}")
+    private ResponseEntity<?> modifyComment(@PathVariable int boardNo, @PathVariable int commentNo, @RequestBody CommentDto commentDto) throws SQLException {
+        if (boardService.selectBoard(boardNo) != null && boardService.selectComment(commentNo) != null) {
+            boardService.updateComment(commentDto);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
     @PatchMapping("/{boardNo}/comments/{commentNo}")
     private ResponseEntity<?> likeComment(@PathVariable int boardNo, @PathVariable int commentNo) throws SQLException {
         if (boardService.selectBoard(boardNo) != null && boardService.selectComment(commentNo) != null) {

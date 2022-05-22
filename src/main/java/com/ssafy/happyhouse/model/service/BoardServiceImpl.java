@@ -74,5 +74,10 @@ public class BoardServiceImpl implements BoardService {
 		boardMapper.likeComment(commentNo);
 	}
 
+	@Override
+	public void updateComment(CommentDto commentDto) {
+		boardMapper.updateComment(commentDto);
+	}
+
 
 }
