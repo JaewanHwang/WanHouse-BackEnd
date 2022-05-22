@@ -3,6 +3,7 @@ package com.ssafy.happyhouse.model.dto;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class BoardDto {
@@ -11,4 +12,6 @@ public class BoardDto {
 	private String content;
 	private Timestamp lastModified;
 	private String userId;
+	private int hit;
+	private List<CommentDto> comments;
 }

@@ -9,10 +9,12 @@ import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.ServletContextListener;
-import java.util.Arrays;
 
 @EnableAspectJAutoProxy // <aop:aspectj-autoproxy></aop:aspectj-autoproxy> 설정
 @MapperScan(basePackages = {"com.ssafy.happyhouse.model.dao", "com.ssafy.happyhouse.model.mapper"})
@@ -38,13 +40,13 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-//		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")// 기본 적용 경로
-//				.excludePathPatterns(EXCLUDE_PATHS);// 적용 제외 경로
-        registry.addInterceptor(jwtInterceptor).addPathPatterns("/user/**", "/board/**", "/house/**") // 기본 적용 경로
-                .excludePathPatterns(Arrays.asList("/user/info", "/user/login", "/user"));// 적용 제외 경로
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+////		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")// 기본 적용 경로
+////				.excludePathPatterns(EXCLUDE_PATHS);// 적용 제외 경로
+//        registry.addInterceptor(jwtInterceptor).addPathPatterns("/user/**", "/board/**", "/house/**") // 기본 적용 경로
+//                .excludePathPatterns(Arrays.asList("/user/info", "/user/login", "/user"));// 적용 제외 경로
+//    }
 
     // interceptor 등록
     // 방법1: 인터셉터 직접 생성 후 등록(bean등록X)

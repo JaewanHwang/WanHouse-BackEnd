@@ -15,9 +15,45 @@
         delete from board where boardNo = #{boardNo}
     </delete>
 
+    <resultMap id="CommentResultMap" type="CommentDto">
+        <id column="commentNo" property="commentNo"></id>
+        <result column="comment" property="comment"></result>
+        <result column="like" property="like"></result>
+        <result column="userId" property="userId"></result>
+    </resultMap>
+
+    <resultMap id="BoardResultMap" type="BoardDto">
+        <id column="boardNo" property="boardNo"/>
+        <result column="title" property="title"></result>
+        <result column="content" property="content"></result>
+        <result column="lastModified" property="lastModified"></result>
+        <result column="userId" property="userId"></result>
+        <result column="hit" property="hit"></result>
+        <collection property="comments" resultMap="CommentResultMap"/>
+    </resultMap>
+
     <select id="selectBoard" parameterType="int" resultType="BoardDto">
-        select * from board where boardNo = #{boardNo}
+        select boardNo
+        from board
+        where boardNo = #{boardNo}
     </select>
+
+    <select id="selectComment" parameterType="int" resultType="CommentDto">
+        select commentNo
+        from comment
+        where commentNo = #{commentNo}
+    </select>
+
+    <select id="selectBoardWithComments" parameterType="int" resultMap="BoardResultMap">
+        select b.boardNo, b.title, b.content, b.lastModified, b.userId, b.hit, c.commentNo, c.comment, c.like, c.userId
+        from board b left join comment c
+        on (b.boardNo = c.boardNo)
+        where b.boardNo = #{boardNo}
+    </select>
+
+    <update id="increaseHit" parameterType="int">
+        update board set hit = hit + 1 where boardNo = #{boardNo}
+    </update>
 
     <select id="selectBoardList" resultType="BoardDto">
         select * from board
@@ -25,6 +61,22 @@
 
     <update id="updateBoard" parameterType="BoardDto">
         update board set title = #{title}, content = #{content} where boardNo = #{boardNo}
+    </update>
+
+    <insert id="insertComment" parameterType="CommentDto">
+        insert into comment(boardNo, comment, `like`, userId)
+        values(#{boardNo}, #{comment}, #{like}, #{userId})
+        <selectKey resultType="int" keyProperty="commentNo" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <delete id="deleteComment" parameterType="int">
+        delete from comment where commentNo = #{commentNo}
+    </delete>
+
+    <update id="likeComment" parameterType="int">
+        update comment set `like` = `like` + 1 where commentNo = #{commentNO}
     </update>
 
 </mapper>

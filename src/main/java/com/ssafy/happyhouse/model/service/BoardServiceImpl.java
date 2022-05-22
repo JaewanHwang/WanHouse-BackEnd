@@ -1,6 +1,7 @@
 package com.ssafy.happyhouse.model.service;
 
 import com.ssafy.happyhouse.model.dto.BoardDto;
+import com.ssafy.happyhouse.model.dto.CommentDto;
 import com.ssafy.happyhouse.model.mapper.BoardMapper;
 import com.ssafy.happyhouse.model.service.interfaces.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,36 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardDto> selectBoardList() throws SQLException {
 		return boardMapper.selectBoardList();
 	}
+
+	@Override
+	public void increaseHit(int boardNo) throws SQLException {
+		boardMapper.increaseHit(boardNo);
+	}
+
+	@Override
+	public void insertComment(CommentDto commentDto) throws SQLException {
+		boardMapper.insertComment(commentDto);
+	}
+
+	@Override
+	public BoardDto selectBoardWithComments(int boardNo) {
+		return boardMapper.selectBoardWithComments(boardNo);
+	}
+
+	@Override
+	public CommentDto selectComment(int commentNo) {
+		return boardMapper.selectComment(commentNo);
+	}
+
+	@Override
+	public void deleteComment(int commentNo) {
+		boardMapper.deleteComment(commentNo);
+	}
+
+	@Override
+	public void likeComment(int commentNo) {
+		boardMapper.likeComment(commentNo);
+	}
+
 
 }
