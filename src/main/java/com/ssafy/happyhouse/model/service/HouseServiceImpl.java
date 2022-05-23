@@ -72,4 +72,9 @@ public class HouseServiceImpl implements HouseService {
 	public List<LikedHouseDto> getLikedApts(String userId) {
 		return houseMapper.selectLikedApts(userId);
 	}
+
+	@Override
+	public List<AvgPricePerYear> getAvgPricesByAptCode(BigInteger aptCode) {
+		return houseMapper.getAvgPricesByAptCode(aptCode);
+	}
 }

@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/house")
+@RequestMapping("/houses")
 public class HouseController {
 
     private HouseService houseService;
@@ -75,6 +75,7 @@ public class HouseController {
             houseInfoResponse.setHouseDetailInfo(openApiService.fetchHouseInfo(houseInfoResponse.getHouseInfo().getKaptCode()));
         }
         houseInfoResponse.setHouseDealList(houseService.getHouseDealsByAptCode(aptCode));
+        houseInfoResponse.setAvgPriceList(houseService.getAvgPricesByAptCode(aptCode));
         return ResponseEntity.ok().body(houseInfoResponse);
     }
 

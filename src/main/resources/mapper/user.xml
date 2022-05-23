@@ -4,7 +4,9 @@
 
 <mapper namespace="com.ssafy.happyhouse.model.mapper.UserMapper">
 
-
+    <select id="selectUserId" parameterType="string" resultType="string">
+        select userId from user where userId = #{userId}
+    </select>
     <select id="selectUser" parameterType="string" resultType="UserDto">
         select * from user where userId = #{userId}
     </select>

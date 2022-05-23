@@ -15,4 +15,5 @@ public interface UserMapper {
 	
 	boolean updateUser(UserDto userDto) throws SQLException;
 
+    String selectUserId(String userId);
 }

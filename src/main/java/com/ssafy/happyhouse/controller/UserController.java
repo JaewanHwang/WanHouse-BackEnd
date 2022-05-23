@@ -1,6 +1,7 @@
 package com.ssafy.happyhouse.controller;
 
 
+import com.ssafy.happyhouse.model.dto.LoginResponse;
 import com.ssafy.happyhouse.model.dto.UserDto;
 import com.ssafy.happyhouse.model.service.interfaces.JwtService;
 import com.ssafy.happyhouse.model.service.interfaces.UserService;
@@ -13,19 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RestController
 public class UserController {
 
     private UserService userService;
     private JwtService jwtService;
-
-    private static final String SUCCESS = "success";
-    private static final String FAIL = "fail";
 
     @Autowired
     public void setJwtService(JwtService jwtService) {
@@ -37,32 +33,31 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
-    private ResponseEntity<Map<String, Object>> login(@RequestBody UserDto userDto) {
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
-        try {
-            UserDto registeredUser = userService.login(userDto);
-            if (registeredUser != null) {
-                String token = jwtService.createJWT("userId", registeredUser.getUserId(), "access-token");// key, data, subject
-                log.debug("로그인 토큰정보 : {}", token);
-                resultMap.put("access-token", token);
-                resultMap.put("message", SUCCESS);
-                status = HttpStatus.ACCEPTED;
-            } else {
-                resultMap.put("message", FAIL);
-                status = HttpStatus.NOT_FOUND;
-            }
-        } catch (Exception e) {
-            log.error("로그인 실패 : {}", e);
-            resultMap.put("message", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
+    @PostMapping("/check-id")
+    private ResponseEntity<?> checkIfUserIdDuplicate(@RequestBody String userId) {
+        if (!userService.checkIfUserIdDuplicate(userId)) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-
-        return new ResponseEntity<>(resultMap, status);
     }
 
-    @PostMapping
+    @PostMapping("/login")
+    private ResponseEntity<?> login(@RequestBody UserDto userDto) throws SQLException {
+        UserDto registeredUser = userService.login(userDto);
+        if (registeredUser != null) {
+            String token = jwtService.createJWT("userId", registeredUser.getUserId(), "access-token");// key, data, subject
+            log.debug("로그인 토큰정보 : {}", token);
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setType("jwt");
+            loginResponse.setToken(token);
+            return ResponseEntity.ok(loginResponse);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/sign-up")
     public ResponseEntity<?> signUp(@RequestBody UserDto userDto) throws SQLException {
         log.debug("userDto info : {}", userDto);
         if (userService.getUserInfo(userDto.getUserId()) == null) {
@@ -73,33 +68,17 @@ public class UserController {
         }
     }
 
-    @GetMapping("/info/{userId}")
-    public ResponseEntity<Map<String, Object>> getUserInfo(
-            @PathVariable("userId") String userid,
-            HttpServletRequest request) {
-        log.debug("userId : {} ", userid);
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.ACCEPTED;
-        if (jwtService.isValidToken(request.getHeader("access-token"))) {
-            log.info("사용 가능한 토큰!!!");
-            try {
-//				로그인 사용자 정보.
-                UserDto userDto = userService.getUserInfo(userid);
-                resultMap.put("userInfo", userDto);
-                resultMap.put("message", SUCCESS);
-                status = HttpStatus.ACCEPTED;
-            } catch (Exception e) {
-                log.error("정보조회 실패 : {}", e);
-                resultMap.put("message", e.getMessage());
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
-            }
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUserInfo(
+            @PathVariable("userId") String userId) throws SQLException {
+        if (jwtService.parseJWT("userId").equals(userId)) {
+            UserDto userDto = userService.getUserInfo(userId);
+            return ResponseEntity.ok(userDto);
         } else {
-            log.error("사용 불가능 토큰!!!");
-            resultMap.put("message", FAIL);
-            status = HttpStatus.NOT_ACCEPTABLE;
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
     @GetMapping("/logout")
     private ResponseEntity<?> logout(HttpServletRequest request, HttpSession session) {
         session.invalidate();

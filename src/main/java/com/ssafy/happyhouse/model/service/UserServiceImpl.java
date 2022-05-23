@@ -48,4 +48,13 @@ public class UserServiceImpl implements UserService {
 	public boolean deleteUser(String userId) throws SQLException {
 		return userMapper.deleteUser(userId);
 	}
+
+	@Override
+	public boolean checkIfUserIdDuplicate(String userId) {
+		if(userMapper.selectUserId(userId) != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

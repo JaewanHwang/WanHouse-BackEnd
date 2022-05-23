@@ -32,9 +32,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     // view-controller 등록
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/user/login_form").setViewName("login_form");
-        registry.addViewController("/user/register_form").setViewName("register_form");
-        registry.addViewController("/user/member_detail").setViewName("member_detail");
+        registry.addViewController("/users/login_form").setViewName("login_form");
+        registry.addViewController("/users/register_form").setViewName("register_form");
+        registry.addViewController("/users/member_detail").setViewName("member_detail");
         registry.addViewController("/board/board_form").setViewName("board_form");
         registry.addViewController("/board/board_modify_form").setViewName("board_modify_form");
 
@@ -44,8 +44,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 //    public void addInterceptors(InterceptorRegistry registry) {
 ////		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")// 기본 적용 경로
 ////				.excludePathPatterns(EXCLUDE_PATHS);// 적용 제외 경로
-//        registry.addInterceptor(jwtInterceptor).addPathPatterns("/user/**", "/board/**", "/house/**") // 기본 적용 경로
-//                .excludePathPatterns(Arrays.asList("/user/info", "/user/login", "/user"));// 적용 제외 경로
+//        registry.addInterceptor(jwtInterceptor).addPathPatterns("/users/**", "/board/**", "/houses/**") // 기본 적용 경로
+//                .excludePathPatterns(Arrays.asList("/users/info", "/users/login", "/users/check-id", "/users/sign-up"));// 적용 제외 경로
 //    }
 
     // interceptor 등록
@@ -54,7 +54,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 //    @Override
 //    public void addInterceptors(InterceptorRegistry registry) {
 //        // 방법1 사용
-//        registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/board/**").addPathPatterns("/house/**");
+//        registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/board/**").addPathPatterns("/houses/**");
 //    }
 
     // listener 등록

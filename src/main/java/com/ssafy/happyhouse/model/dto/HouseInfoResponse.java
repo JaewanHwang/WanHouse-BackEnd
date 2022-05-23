@@ -9,4 +9,5 @@ public class HouseInfoResponse {
     private HouseInfoDto houseInfo;
     private HouseDetailInfoDto houseDetailInfo;
     private List<HouseDealDto> houseDealList;
+    private List<AvgPricePerYear> avgPriceList;
 }

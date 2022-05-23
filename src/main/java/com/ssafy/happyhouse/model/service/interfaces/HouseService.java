@@ -28,4 +28,6 @@ public interface HouseService {
     void unlikeThisApt(BigInteger aptCode, String userId);
 
     List<LikedHouseDto> getLikedApts(String userId);
+
+    List<AvgPricePerYear> getAvgPricesByAptCode(BigInteger aptCode);
 }

@@ -31,4 +31,6 @@ public interface HouseMapper {
     void unlikeThisApt(Map<String, Object> parameterMap);
 
     List<LikedHouseDto> selectLikedApts(String userId);
+
+    List<AvgPricePerYear> getAvgPricesByAptCode(BigInteger aptCode);
 }

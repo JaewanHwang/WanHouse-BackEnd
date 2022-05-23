@@ -16,4 +16,6 @@ public interface UserService {
     boolean updateUser(UserDto userDto) throws SQLException;
 
     boolean deleteUser(String userId) throws SQLException;
+
+    boolean checkIfUserIdDuplicate(String userId);
 }
