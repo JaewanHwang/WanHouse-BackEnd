@@ -25,14 +25,17 @@
     </select>
 
     <select id="getApts" parameterType="map" resultType="houseInfoDto">
-        select distinct hi.aptCode, hi.kaptCode, hi.aptName, hi.dongCode, hi.dongName, dc.sidoName, dc.gugunName,
-        hi.jibun, hi.lat, hi.lng
+        select hi.aptCode, hi.kaptCode, hi.aptName, hi.dongCode, hi.dongName, dc.sidoName, dc.gugunName,
+        hi.jibun, hi.lat, hi.lng, min(replace(hd.dealAmount, ",", "") + 0) as minPrice, max(replace(hd.dealAmount, ",", "") + 0) as maxPrice
         from houseinfo hi inner join housedeal hd inner join dongcode dc
         on hi.aptCode = hd.aptCode and hi.dongCode = dc.dongCode
+
         <where>
             <choose>
                 <when test="lat != null and lat != null">
-                    and ST_Distance_Sphere(POINT(#{lng}, #{lat}), POINT(lng, lat)) &lt;= 3000 -- 지도 반경 설정, 현재: 3km
+                    and ST_Distance_Sphere(POINT(#{lng}, #{lat}), POINT(lng, lat)) &lt;= 10000 -- 지도 반경 설정, 현재: 3km
+                    group by hi.aptCode
+                    order by ST_Distance_Sphere(POINT(#{lng}, #{lat}), POINT(lng, lat))
                 </when>
                 <otherwise>
                     <if test="keyword != null">
@@ -54,7 +57,7 @@
             order by ${order}
             <if test='!order.equals("aptName")'>desc</if>
         </if>
-        limit 10;
+        limit 20
     </select>
 
     <select id="getHouseDealsByAptCode" parameterType="biginteger" resultType="houseDealDto">

@@ -84,8 +84,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("*")
 //			.allowedOrigins("http://localhost:8080", "http://localhost:8081")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//			.allowedHeaders("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+			.allowedHeaders("*")
                 .maxAge(6000);
     }
 }

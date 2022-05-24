@@ -20,7 +20,7 @@ public class JwtServiceImpl implements JwtService {
 
 //	@Value("${secret-key}")
 //	private String SECRET_KEY;
-	private static final int EXPIRE_MINUTES = 60;
+	private static final int EXPIRE_MINUTES = 600;
 	private KeyProperties keyProperties;
 
 	@Autowired

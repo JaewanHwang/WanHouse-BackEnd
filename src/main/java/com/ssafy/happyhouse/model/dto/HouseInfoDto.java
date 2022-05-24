@@ -20,6 +20,7 @@ public class HouseInfoDto {
 	private double lat;
 	private double lng;
 	private String img;
-	private String recentPrice;
+	private int minPrice;
+	private int maxPrice;
 
 }
