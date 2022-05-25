@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +69,7 @@ public class HouseController {
     }
 
     @GetMapping("/apts/{aptCode}")
-    public ResponseEntity<?> getAptDetail(@PathVariable BigInteger aptCode) throws Exception {
+    public ResponseEntity<?> getAptDetail(@PathVariable BigInteger aptCode, HttpServletRequest request) throws Exception {
         HouseInfoResponse houseInfoResponse = new HouseInfoResponse();
         houseInfoResponse.setHouseInfo(houseService.getHouseInfo(aptCode));
         if (houseInfoResponse.getHouseInfo().getKaptCode() != null) {
@@ -76,6 +77,11 @@ public class HouseController {
         }
         houseInfoResponse.setHouseDealList(houseService.getHouseDealsByAptCode(aptCode));
         houseInfoResponse.setAvgPriceList(houseService.getAvgPricesByAptCode(aptCode));
+
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("userId", jwtService.parseJWT(request.getHeader("access-token")));
+        parameterMap.put("aptCode", aptCode);
+        houseInfoResponse.setLikeThisApt(houseService.getLikeThisApt(parameterMap) == null ? false : true);
         return ResponseEntity.ok().body(houseInfoResponse);
     }
 

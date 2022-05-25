@@ -10,4 +10,5 @@ public class HouseInfoResponse {
     private HouseDetailInfoDto houseDetailInfo;
     private List<HouseDealDto> houseDealList;
     private List<AvgPricePerYear> avgPriceList;
+    private Boolean likeThisApt;
 }

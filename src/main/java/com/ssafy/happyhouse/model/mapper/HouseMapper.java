@@ -33,4 +33,6 @@ public interface HouseMapper {
     List<LikedHouseDto> selectLikedApts(String userId);
 
     List<AvgPricePerYear> getAvgPricesByAptCode(BigInteger aptCode);
+
+    BigInteger getLikeThisApt(Map<String, Object> aptCode);
 }

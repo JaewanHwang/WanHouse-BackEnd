@@ -28,7 +28,7 @@
         select
         <if test="lat != null and lng != null">
             hi.aptCode, hi.kaptCode, hi.aptName, hi.dongCode, hi.dongName, dc.sidoName, dc.gugunName,
-            hi.jibun, hi.lat, hi.lng , min(replace(hd.dealAmount, ",", "") + 0) as minPrice, max(replace(hd.dealAmount, ",", "") + 0) as maxPrice
+            hi.jibun, hi.lat, hi.lng , min(replace(hd.dealAmount, ",", "") + 0.0) as minPrice, max(replace(hd.dealAmount, ",", "") + 0.0) as maxPrice
         </if>
         <if test="keyword != null">
             distinct hi.aptCode, hi.kaptCode, hi.aptName, hi.dongCode, hi.dongName, dc.sidoName, dc.gugunName,
@@ -40,9 +40,7 @@
         <where>
             <choose>
                 <when test="lat != null and lng != null">
-                    and ST_Distance_Sphere(POINT(#{lng}, #{lat}), POINT(lng, lat)) &lt;= 10000 -- 지도 반경 설정, 현재: 3km
-                    group by hi.aptCode
-                    order by ST_Distance_Sphere(POINT(#{lng}, #{lat}), POINT(lng, lat))
+                    and ST_Distance_Sphere(POINT(#{lng}, #{lat}), POINT(lng, lat)) &lt;= 10000
                 </when>
                 <otherwise>
                     <if test="keyword != null">
@@ -50,16 +48,44 @@
                     </if>
                 </otherwise>
             </choose>
+            <if test="dealAmountLowerBound != null and dealAmountUpperBound != null">
+                <choose>
+                    <when test="dealAmountUpperBound == 16">
+                        and (replace(hd.dealAmount, ",", "") + 0) >= #{dealAmountLowerBound}
+                    </when>
+                    <otherwise>
+                        and (replace(hd.dealAmount, ",", "") + 0) between #{dealAmountLowerBound} and #{dealAmountUpperBound}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="buildYearLowerBound != null and buildYearUpperBound != null">
+                <choose>
+                    <when test="buildYearUpperBound == 31">
+                        and YEAR(CURRENT_DATE()) - hi.buildYear >= #{buildYearLowerBound}
+                    </when>
+                    <otherwise>
+                        and YEAR(CURRENT_DATE()) - hi.buildYear between #{buildYearLowerBound} and #{buildYearUpperBound}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="areaLowerBound != null and areaUpperBound != null">
+                <choose>
+                    <when test="areaUpperBound == 151">
+                    and hd.area + 0.0 >= #{areaLowerBound}
+                    </when>
+                    <otherwise>
+                    and hd.area + 0.0 between #{areaLowerBound} and #{areaUpperBound}
+                    </otherwise>
+                </choose>
+            </if>
             <if test="area != null">
                 and hd.area + 0.0 >= #{area}
             </if>
-            <if test="dealAmount != null">
-                and (replace(hd.dealAmount, ",", "") + 0) >= (#{dealAmount} * 10000)
-            </if>
-            <if test="buildYear != null">
-                and hi.buildYear >= #{buildYear}
-            </if>
         </where>
+        <if test="lat != null and lng != null">
+            group by hi.aptCode
+            order by ST_Distance_Sphere(POINT(#{lng}, #{lat}), POINT(lng, lat))
+        </if>
         <if test="order != null">
             order by ${order}
             <if test='!order.equals("aptName")'>desc</if>
@@ -132,6 +158,11 @@
                             on interest.aptCode = hi.aptCode and hi.aptCode = hd.aptCode and hi.dongCode = dc.dongCode
         where interest.userId = #{userId}
         group by hi.aptCode;
+    </select>
+    <select id="getLikeThisApt" parameterType="map" resultType="biginteger">
+        select aptCode
+        from interest
+        where interest.userId = #{userId} and interest.aptCode = #{aptCode}
     </select>
 
 </mapper>
