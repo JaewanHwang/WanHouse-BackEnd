@@ -9,7 +9,7 @@ public class HouseDetailInfoDto {
     private int kaptMgrCnt; // 일반관리 인원
     private String codeMgr; // 일반관리 방식
     private String codeClean;
-    private int aptdClcnt;
+    private int kaptdClcnt;
     private String codeGarbage;
     private int kaptdEcnt;
     private int kaptdPcnt;
