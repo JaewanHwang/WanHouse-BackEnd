@@ -30,11 +30,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     // view-controller 등록
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/users/login_form").setViewName("login_form");
-        registry.addViewController("/users/register_form").setViewName("register_form");
-        registry.addViewController("/users/member_detail").setViewName("member_detail");
-        registry.addViewController("/board/board_form").setViewName("board_form");
-        registry.addViewController("/board/board_modify_form").setViewName("board_modify_form");
+        registry.addViewController("/").setViewName("forward:/index.html");
 
     }
 
@@ -72,6 +68,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 //        registry.addResourceHandler("/img/profile/**").addResourceLocations("/resources/img/profile/");
     }
+
+
+
 
     //  Interceptor를 이용해서 처리하므로 전역의 Cross Origin 처리를 해준다.
     @Override

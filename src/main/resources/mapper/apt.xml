@@ -90,7 +90,7 @@
             order by ${order}
             <if test='!order.equals("aptName")'>desc</if>
         </if>
-        limit 20
+        limit 50
     </select>
 
     <select id="getHouseDealsByAptCode" parameterType="biginteger" resultType="houseDealDto">
@@ -126,7 +126,7 @@
     </select>
 
     <insert id="likeThisApt" parameterType="map">
-        insert into interest
+        insert into interest(aptCode, userId)
         values (#{aptCode}, #{userId})
     </insert>
 
@@ -146,6 +146,7 @@
                         hi.dongName,
                         dc.sidoName,
                         dc.gugunName,
+                        hi.buildYear,
                         hi.jibun,
                         hi.lat,
                         hi.lng,
@@ -157,7 +158,8 @@
                  inner join dongcode dc
                             on interest.aptCode = hi.aptCode and hi.aptCode = hd.aptCode and hi.dongCode = dc.dongCode
         where interest.userId = #{userId}
-        group by hi.aptCode;
+        group by hi.aptCode
+        order by interest.regTime desc
     </select>
     <select id="getLikeThisApt" parameterType="map" resultType="biginteger">
         select aptCode
