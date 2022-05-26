@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkfront_end"]=self["webpackChunkfront_end"]||[]).push([[445],{4445:function(e,n,t){t.r(n),t.d(n,{default:function(){return d}});var r=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("v-container",[t("h2",{staticClass:"ma-3",staticStyle:{"text-align":"center"}},[e._v("Board")]),t("router-view")],1)},a=[],l={name:"BoardView"},u=l,c=t(1001),i=t(43453),s=t.n(i),o=t(4228),f=(0,c.Z)(u,r,a,!1,null,null,null),d=f.exports;s()(f,{VContainer:o.Z})}}]);
+//# sourceMappingURL=445-legacy.8b52e184.js.map
