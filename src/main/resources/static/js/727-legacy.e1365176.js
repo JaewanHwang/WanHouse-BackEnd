@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkfront_end"]=self["webpackChunkfront_end"]||[]).push([[727],{9727:function(e,n,t){t.r(n),t.d(n,{default:function(){return h}});var r=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("v-container",[t("h2",{staticClass:"ma-3",staticStyle:{"text-align":"center"}},[e._v("User")]),t("router-view")],1)},a=[],l={name:"UserView"},s=l,u=t(1001),c=t(43453),i=t.n(c),f=t(4228),o=(0,u.Z)(s,r,a,!1,null,null,null),h=o.exports;i()(o,{VContainer:f.Z})}}]);
-//# sourceMappingURL=727-legacy.e1365176.js.map
